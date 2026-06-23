@@ -39,7 +39,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="app" style={{ background: 'rgba(0,0,0, 0.3)', position: 'relative', height: '100vh', width: '100%' }}>
+    <div className="app" style={{ background: 'rgba(0,0,0, 0.3)', position: 'relative', height: '100vh', width: '100vw', overflow: 'hidden' }}>
       <ModelSoundViewer
         modelPath={models[currentModelIndex].modelPath}
         soundPath={models[currentModelIndex].soundPath}

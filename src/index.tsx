@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import PreloadProvider from './components/PreloadContext'; // Adjust the import based on your directory structure
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <PreloadProvider>
+      <App />
+    </PreloadProvider>
   </React.StrictMode>
 );
 

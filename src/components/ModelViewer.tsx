@@ -1,44 +1,24 @@
 // components/ModelViewer.tsx
-import React, { useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
-import { motion } from 'framer-motion';
+import React from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import { usePreload } from './PreloadContext'; // Import the preload hook
 
 interface ModelViewerProps {
   modelPath: string;
-  zoom: number; // Accept zoom prop
+  zoom: number;
 }
 
-const Model: React.FC<{ modelPath: string }> = ({ modelPath }) => {
-  const gltf = useGLTF(modelPath);
-  console.log('using model path: ', modelPath)
-  return <primitive object={gltf.scene}/>;
-};
-
 const ModelViewer: React.FC<ModelViewerProps> = ({ modelPath, zoom }) => {
-  // Define Framer Motion variants for enter and exit animations
-  const variants = {
-    initial: { scale: 0.8, opacity: 0 },
-    animate: { scale: 1, opacity: 1 },
-    exit: { scale: 0.8, opacity: 0 },
-  };
-
+  const { models } = usePreload(); // Use preloaded models
+  const gltf = models[modelPath]; // Get the preloaded model
+  
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      variants={variants}
-      transition={{ duration: 0.5 }} // Adjust the duration for smooth transition
-      style={{ width: '100%', height: '100%' }}
-    >
-      <Canvas camera={{ position: [0, 0, 2] }} style={{width: '100%', height: '100%'}}>
-        <ambientLight />
-        <Model modelPath={modelPath} />
-        <OrbitControls zoom0={zoom} enablePan={false} />
-      </Canvas>
-      <div style={{position: 'absolute', left: 0, top: 0, zIndex: 100}}>{modelPath}</div>
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 2] }} style={{ width: '100%', height: '100%' }}>
+      <ambientLight />
+      {gltf && <primitive object={gltf.scene} />} {/* Accessing gltf.scene correctly */}
+      <OrbitControls enableZoom={true} zoom0={zoom} enablePan={false} />
+    </Canvas>
   );
 };
 
